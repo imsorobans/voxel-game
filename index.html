@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voxel Survival Engine</title>
+<link rel="stylesheet" href="style.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "simplex-noise": "https://unpkg.com/simplex-noise@4.0.1/dist/esm/simplex-noise.js"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="viewport">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ============================ HUD LAYER ============================ -->
+    <div id="hud-layer">
+      <!-- Crosshair -->
+      <svg id="crosshair" viewBox="0 0 20 20" width="20" height="20">
+        <line x1="10" y1="2" x2="10" y2="8" stroke="white" stroke-width="2"/>
+        <line x1="10" y1="12" x2="10" y2="18" stroke="white" stroke-width="2"/>
+        <line x1="2" y1="10" x2="8" y2="10" stroke="white" stroke-width="2"/>
+        <line x1="12" y1="10" x2="18" y2="10" stroke="white" stroke-width="2"/>
+      </svg>
+
+      <!-- Day/Night label -->
+      <div id="daynight-label">Day (0/3 cycles survived)</div>
+
+      <!-- Top-left status: hearts + hunger -->
+      <div id="status-panel">
+        <div id="hearts-container" class="stat-row"></div>
+        <div id="hunger-bar-outer" class="stat-row">
+          <div id="hunger-bar-fill"></div>
+          <span class="hunger-icon">🍖</span>
+        </div>
+      </div>
+
+      <!-- Hotbar -->
+      <div id="hotbar">
+        <div class="hotbar-slot" data-slot="0"><span class="swatch swatch-grass"></span><span class="key">1</span></div>
+        <div class="hotbar-slot" data-slot="1"><span class="swatch swatch-dirt"></span><span class="key">2</span></div>
+        <div class="hotbar-slot" data-slot="2"><span class="swatch swatch-stone"></span><span class="key">3</span></div>
+        <div class="hotbar-slot" data-slot="3"><span class="swatch swatch-wood"></span><span class="key">4</span></div>
+        <div class="hotbar-slot" data-slot="4"><span class="swatch swatch-leaves"></span><span class="key">5</span></div>
+        <div class="hotbar-slot" data-slot="5"><span class="swatch swatch-sand"></span><span class="key">6</span></div>
+        <div class="hotbar-slot" data-slot="6"><span class="swatch swatch-stone"></span><span class="key">7</span></div>
+        <div class="hotbar-slot" data-slot="7"><span class="swatch swatch-wood"></span><span class="key">8</span></div>
+        <div class="hotbar-slot" data-slot="8"><span class="swatch swatch-dirt"></span><span class="key">9</span></div>
+      </div>
+
+      <!-- Floating combat / pickup text layer -->
+      <div id="floating-layer"></div>
+
+      <!-- Hit flash overlay -->
+      <div id="hit-flash"></div>
+    </div>
+
+    <!-- ============================ OVERLAYS ============================ -->
+    <div id="start-overlay">
+      <div class="overlay-card">
+        <h1>VOXEL SURVIVAL</h1>
+        <p>Click to lock your mouse and begin.</p>
+        <ul class="controls-list">
+          <li><b>WASD</b> — move &nbsp; <b>Space</b> — jump &nbsp; <b>Shift</b> — sprint</li>
+          <li><b>Left Click</b> — mine / attack &nbsp; <b>Right Click</b> — place block</li>
+          <li><b>1-9</b> — select hotbar slot &nbsp; <b>P</b> — save game</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="death-screen" class="end-screen">
+      <div class="overlay-card">
+        <h1 class="death-title">YOU DIED</h1>
+        <p>The night claimed you.</p>
+        <button id="respawn-btn">Respawn</button>
+      </div>
+    </div>
+
+    <div id="victory-screen" class="end-screen">
+      <div class="overlay-card">
+        <h1 class="victory-title">YOU SURVIVED</h1>
+        <p>Three full cycles of day and night have passed.</p>
+        <button id="playagain-btn">Keep Playing</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
